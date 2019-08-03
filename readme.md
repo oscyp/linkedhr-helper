@@ -14,7 +14,7 @@ It's checking the first line of written message. If contains the name of interes
 To install You need to import one of the following file in Your browser:
 
 * [ZIP file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.1/linkedhr_helper.zip)
-* [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.1/linkedhr_helper.xpi)
+* [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.1/linkedhr_helper.xpi) - can be installed directly by clicking
 
 #### Screenshots
 
