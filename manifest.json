@@ -1,0 +1,19 @@
+{
+
+    "description": "You will never enter a wrong name anymore!",
+    "manifest_version": 2,
+    "name": "LinkedHR helper",
+    "version": "1.0",
+    "homepage_url": "https://github.com/oscyp/linkedhr-helper",
+    "icons": {
+      "48": "icons/icon_fill.png"
+    },
+  
+    "content_scripts": [
+      {
+        "matches": ["*://*.linkedin.com/in/*"],
+        "js": ["name-helper.js"]
+      }
+    ]
+  
+  }
