@@ -7,70 +7,81 @@ const addNoteCallback = function(mutationsList, observer) {
     const cancelNode = document.getElementsByClassName("artdeco-button artdeco-button--3 artdeco-button--muted artdeco-button--secondary mr1")[0];
     const addNoteNode = document.getElementsByClassName("artdeco-button artdeco-button--secondary artdeco-button--3 mr1")[0];
 
-    if (cancelNode !== undefined){
+    if (cancelNode != null){
         cancelNode.onclick = onEstablishContact;
     }
 
-    if (addNoteNode !== undefined){
+    if (addNoteNode != null){
         onAddNote();
     }
 }
 
-const messagenNodeCallback = function(mutationsList, observer){
+const messageNodeCallback = function(mutationsList, observer){
     const sendButton = document.getElementsByClassName("msg-form__send-button artdeco-button artdeco-button--1")[0];
     sendButton.onclick = onDirectSendClick;
 }
 
 const appoutletNodeCallback = function(mutationsList, observer){
     const bubbleNode = document.getElementById("msg-overlay");
+    const authenticationNode = document.getElementsByClassName("authentication-outlet")[0];
 
-    if (bubbleNode !== undefined){
+    if (bubbleNode != null){
         bubbleObserver.observe(bubbleNode, bubbleConfig);
+    }
+
+    if (authenticationNode != null){
+        authenticationObserver.observe(authenticationNode, authenticationConfig);
     }
 }
 
 const bubbleNodeCallback = function(mutationsList, observer){
     const bubbles = document.querySelectorAll('[id^="msg-overlay-conversation-bubble-"]');
-
     bubbles.forEach(addSendEvent);
+}
+
+const authenticationNodeCallback = function(mutationsList, observer){
+    const sendButton = document.getElementsByClassName("msg-form__send-button artdeco-button artdeco-button--1")[0];
+
+    if (sendButton != null){
+        const message = document.getElementsByClassName("msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate")[0].innerText;
+        const name = document.getElementsByClassName("msg-entity-lockup__entity-title truncate hoverable-link-text")[0].innerText;
+        sendButton.onclick = function(e){ onSendClick(e, message, name)};
+    }
 }
 
 const establishObserver = new MutationObserver(establishContactCallback);
 const actionsPanelObserver = new MutationObserver(addNoteCallback);
-const messageObserver = new MutationObserver(messagenNodeCallback);
+const messageObserver = new MutationObserver(messageNodeCallback);
 const appoutletObserver = new MutationObserver(appoutletNodeCallback);
 const bubbleObserver = new MutationObserver(bubbleNodeCallback);
+const authenticationObserver = new MutationObserver(authenticationNodeCallback);
 
 const establishConfig = { attributes: false, childList: true, subtree: false };
 const messageConfig = { attributes: true, childList: false, subtree: false };
 const actionsConfig = { attributes: false, childList: true, subtree: false };
 const appoutletObserverConfig = { attributes: false, childList: true, subtree: false };
 const bubbleConfig = { attributes: true, childList: true, subtree: true };
+const authenticationConfig = { attributes: false, childList: true, subtree: false };
 
-if (document.readyState !== "loading") {
+var obs = new MutationObserver(function (mutations, observer) {
     onReady();
-} else {
-    document.addEventListener("DOMContentLoaded", onReady);
-}
-
-window.onload = function(){
-    onReady();
-}
+});
+obs.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: false });
 
 function onReady() {
     const establishNode = document.getElementById("li-modal-container");
     const messageNode = document.getElementsByClassName("pv-s-profile-actions pv-s-profile-actions--send-in-mail ml2 artdeco-button artdeco-button--2 artdeco-button--secondary ember-view")[0];
     const appoutletNode = document.getElementsByClassName("application-outlet")[0];
 
-    if (establishNode !== undefined){
+    if (establishNode != null){
         establishObserver.observe(establishNode, establishConfig);
     }
 
-    if (messageNode !== undefined){
+    if (messageNode != null){
         messageObserver.observe(messageNode, messageConfig);
     }
 
-    if (appoutletNode !== undefined){
+    if (appoutletNode != null){
         appoutletObserver.observe(appoutletNode, appoutletObserverConfig);
     }
 }

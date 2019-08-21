@@ -12,6 +12,7 @@
     "content_scripts": [
       {
         "matches": ["*://*.linkedin.com/*"],
+        "run_at": "document_end",
         "js": ["name-helper.js"]
       }
     ]
