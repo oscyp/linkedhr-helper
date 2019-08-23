@@ -1,94 +1,62 @@
-
-const establishContactHandler = function(){
-    const actionsPanel = document.getElementsByClassName("send-invite__actions")[0];
-
-    if (actionsPanel != null){
-        addNoteHandler();
-    }
-}
-
-const addNoteHandler = function(mutationsList, observer) {
-    const cancelNode = document.getElementsByClassName("artdeco-button artdeco-button--3 artdeco-button--muted artdeco-button--secondary mr1")[0];
-    const addNoteNode = document.getElementsByClassName("artdeco-button artdeco-button--secondary artdeco-button--3 mr1")[0];
-
-    if (cancelNode != null){
-        cancelNode.onclick = establishContactHandler;
-    }
-
-    if (addNoteNode != null){
-        const sendButton = document.getElementsByClassName("artdeco-button artdeco-button--3 ml1")[0];
-
-        if (sendButton != null){
-            sendButton.onclick = onIndirectSendClick;
-        }
-    }
-}
-
-const messageHandler = function(mutationsList, observer){
-    const sendButton = document.getElementsByClassName("msg-form__send-button artdeco-button artdeco-button--1")[0];
+var bodyObserver = new MutationObserver(function (mutations, observer) {
+    const sendButtons_one = document.querySelectorAll('[class^="msg-form__send-button artdeco-button artdeco-button--1"]');
+    const sendButtons_two = document.querySelectorAll('[class^="artdeco-button artdeco-button--3"]:not(.artdeco-button--secondary)')
     
-    if (sendButton != null){
-        sendButton.onclick = onDirectSendClick;
+    if(sendButtons_one != null){
+        sendButtons_one.forEach(it => it.onclick = (e) => onSendButtonClick(e, it))
     }
-}
-
-const appoutletHandler = function(mutationsList, observer){
-    const bubbles = document.querySelectorAll('[id^="msg-overlay-conversation-bubble-"]');
-    const sendButton = document.getElementsByClassName("msg-form__send-button artdeco-button artdeco-button--1")[0];
-
-    if (bubbles != null){
-        bubbles.forEach(addSendEvent);
+    if (sendButtons_two != null){        
+        sendButtons_two.forEach(it => it.onclick = (e) => onSendButtonClick(e, it))
     }
-    else if (sendButton != null){ //prevent overwriting
-        sendButton.onclick = onMessageBoxSendClick;
-    }
-}
-
-var obs = new MutationObserver(function (mutations, observer) {
-    onBodyChange();
 });
-obs.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: false });
 
-function onBodyChange() {
-    const establishNode = document.getElementById("li-modal-container");
-    const messageNode = document.getElementsByClassName("pv-s-profile-actions pv-s-profile-actions--send-in-mail ml2 artdeco-button artdeco-button--2 artdeco-button--secondary ember-view")[0];
-    const appoutletNode = document.getElementsByClassName("application-outlet")[0];
+bodyObserver.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: false });
 
-    if (establishNode != null){
-        establishContactHandler();
+function onSendButtonClick(e, item){
+    if(findUpId(item, "messaging") != null){
+        onMessageBoxSendClick(e)
+    }
+    else if (findUpId(item, "msg-overlay") != null){
+        onBubbleSendClick(e, item)
     }
 
-    if (messageNode != null){
-        messageHandler();
-    }
-
-    if (appoutletNode != null){
-        appoutletHandler();
+    else if (findUpId(item, "li-modal-container") != null){
+        onIndirectSendClick(e);
     }
 }
 
-function addSendEvent(item, idx){
-    const sendButton = item.getElementsByClassName("msg-form__send-button artdeco-button artdeco-button--1")[0];
-
-    if (sendButton != null){
-        sendButton.onclick = function(e){ onBubbleSendClick(e, item) };
+function findUpId(element, id) {
+    while (element.parentNode) {
+        element = element.parentNode;
+        if (element.id === id)
+            return element;
     }
+    return null;
 }
 
-function onBubbleSendClick(e, item){
-    const name = item.getElementsByClassName("msg-overlay-bubble-header__primary-text t-14 t-black t-bold hoverable-link-text")[0].innerText;
-    const message = item.getElementsByClassName("msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate")[0].innerText;
-    onSendClick(e, message, name);
+function onBubbleSendClick(e, sendButton){
+    const bubbleParent = sendButton.closest('[id^="msg-overlay-conversation-bubble"]')
+    
+    if (bubbleParent != null){
+        const bigBubble = bubbleParent.querySelector("dt")
+        const smallBubble = bubbleParent.querySelector('[class="msg-overlay-bubble-header__primary-text t-14 t-black t-bold hoverable-link-text"]')
+        const message = bubbleParent.querySelector('[class="msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate"]');
+
+        if (message != null){
+            if (bigBubble != null){
+                onSendClick(e, message.innerText, bigBubble.innerText);
+            }
+            else if(smallBubble != null){
+                onSendClick(e, message.innerText, smallBubble.innerText);
+            }
+        }
+    } 
 }
 
 function onIndirectSendClick(e){
     const message = document.getElementById("custom-message").value;
-    onSendClick(e, message, getName());
-}
-
-function onDirectSendClick(e){
-    const messageText = document.getElementsByClassName("msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate")[0].innerText;
-    onSendClick(e, messageText, getName());
+    const nameText = document.getElementsByClassName("inline t-24 t-black t-normal break-words")[0].innerText;
+    onSendClick(e, message, nameText);
 }
 
 function onMessageBoxSendClick(e){
@@ -120,9 +88,4 @@ function checkFirstLineNaming(message, name){
     }
 
     return false;
-}
-
-function getName() {
-    const nameText = document.getElementsByClassName("inline t-24 t-black t-normal break-words")[0].innerText;
-    return nameText;
 }
