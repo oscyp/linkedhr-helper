@@ -15,10 +15,10 @@ It's checking the first line of written message. If contains the name of interes
 
 To install You need to import one of the following file in your browser:
 
-* [ZIP file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.2/linkedhr_helper-0.2.zip)
-* [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.2/linkedhr_helper-0.2.xpi) - can be installed directly by clicking
-* [Extended] [ZIP file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.19/linkedhr_helper-0.19.zip)
-* [Extended] [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.19/linkedhr_helper-0.19.xpi) - can be installed directly by clicking
+* [ZIP file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.2/linkedhr_helper_0.2.zip)
+* [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.2/linkedhr_helper_0.2.xpi) - can be installed directly by clicking
+* [Extended] [ZIP file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.19/linkedhr_helper_0.19.zip)
+* [Extended] [XPI file](https://github.com/oscyp/linkedhr-helper/releases/download/v0.19/linkedhr_helper_0.19.xpi) - can be installed directly by clicking
 
 #### Screenshots
 
