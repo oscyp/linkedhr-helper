@@ -13,13 +13,9 @@ var bodyObserver = new MutationObserver(function (mutations, observer) {
 bodyObserver.observe(document.body, { childList: true, subtree: true, attributes: false, characterData: false });
 
 function onSendButtonClick(e, item){
-    if(findUpId(item, "messaging") != null){
-        onMessageBoxSendClick(e)
-    }
-    else if (findUpId(item, "msg-overlay") != null){
+    if (findUpId(item, "msg-overlay") != null){
         onBubbleSendClick(e, item)
     }
-
     else if (findUpId(item, "li-modal-container") != null){
         onIndirectSendClick(e);
     }
@@ -39,16 +35,10 @@ function onBubbleSendClick(e, sendButton){
     
     if (bubbleParent != null){
         const bigBubble = bubbleParent.querySelector("dt")
-        const smallBubble = bubbleParent.querySelector('[class="msg-overlay-bubble-header__primary-text t-14 t-black t-bold hoverable-link-text"]')
         const message = bubbleParent.querySelector('[class="msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate"]');
 
-        if (message != null){
-            if (bigBubble != null){
-                onSendClick(e, message.innerText, bigBubble.innerText);
-            }
-            else if(smallBubble != null){
-                onSendClick(e, message.innerText, smallBubble.innerText);
-            }
+        if (message != null && bigBubble != null){
+            onSendClick(e, message.innerText, bigBubble.innerText);
         }
     } 
 }
@@ -57,12 +47,6 @@ function onIndirectSendClick(e){
     const message = document.getElementById("custom-message").value;
     const nameText = document.getElementsByClassName("inline t-24 t-black t-normal break-words")[0].innerText;
     onSendClick(e, message, nameText);
-}
-
-function onMessageBoxSendClick(e){
-    const message = document.getElementsByClassName("msg-form__contenteditable t-14 t-black--light t-normal flex-grow-1 notranslate")[0].innerText;
-    const name = document.getElementsByClassName("msg-entity-lockup__entity-title truncate hoverable-link-text")[0].innerText;  
-    onSendClick(e, message, name)
 }
 
 function onSendClick(e, message, name) {
